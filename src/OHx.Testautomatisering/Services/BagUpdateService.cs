@@ -14,15 +14,12 @@ namespace OHx.Testautomatisering.Services
         private readonly OhxSchrijfDbContext _ohxSchrijfDbContext;
         private readonly NwaDbContext _nwaDbContext;
         private readonly NwwDbContext _nwwDbContext;
-        private readonly WegvakTestData _wegvakTestData;
 
-        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext,
-            WegvakTestData wegvakTestData)
+        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext)
         {
             _ohxSchrijfDbContext = ohxSchrijfDbContext;
             _nwaDbContext = nwaDbContext;
             _nwwDbContext = nwwDbContext;
-            _wegvakTestData = wegvakTestData;
         }
 
         public void CheckWegvakEfemeridenDiff(long wegvakId, short nieuwGemeenteId, short oudGemeenteId, DateTime begindatumVastlegging, DateTime begindatumWerkelijkheid)

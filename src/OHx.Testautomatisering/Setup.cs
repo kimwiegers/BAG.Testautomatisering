@@ -1,5 +1,4 @@
 ﻿using BoDi;
-using OHx.Testautomatisering;
 using OHx.Testautomatisering.NWADB;
 using OHx.Testautomatisering.NWWDB;
 using OHx.Testautomatisering.OHX_SCHRIJFDB;
@@ -23,7 +22,7 @@ namespace DocumentStore.Testautomatisering
         public void StartBagUpdateService()
         {
             // Create and configure a concrete instance of IDocumentStore
-            IBagUpdateService bagUpdateService = new BagUpdateService(new OhxSchrijfDbContext(), new NwaDbContext(), new NwwDbContext(), new WegvakTestData());
+            IBagUpdateService bagUpdateService = new BagUpdateService(new OhxSchrijfDbContext(), new NwaDbContext(), new NwwDbContext());
 
             // Make this instance available to all other step definitions
             _container.RegisterInstanceAs(bagUpdateService);
