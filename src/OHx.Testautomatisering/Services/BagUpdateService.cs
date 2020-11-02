@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using OHx.Testautomatisering.Data;
 using OHx.Testautomatisering.NWADB;
 using OHx.Testautomatisering.NWWDB;
 using OHx.Testautomatisering.OHX_SCHRIJFDB;
@@ -15,15 +14,12 @@ namespace OHx.Testautomatisering.Services
         private readonly OhxSchrijfDbContext _ohxSchrijfDbContext;
         private readonly NwaDbContext _nwaDbContext;
         private readonly NwwDbContext _nwwDbContext;
-        private readonly WegvakTestData _wegvakTestData;
 
-        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext,
-            WegvakTestData wegvakTestData)
+        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext)
         {
             _ohxSchrijfDbContext = ohxSchrijfDbContext;
             _nwaDbContext = nwaDbContext;
             _nwwDbContext = nwwDbContext;
-            _wegvakTestData = wegvakTestData;
         }
 
         public void CheckWegvakEfemeridenDiff(long wegvakId, short nieuwGemeenteId, short oudGemeenteId, DateTime begindatumVastlegging, DateTime begindatumWerkelijkheid)
@@ -37,7 +33,7 @@ namespace OHx.Testautomatisering.Services
         }
 
         public void CheckNieuwWegvakEfemeridenInsert(long wegvakId, short nieuwGemeenteId, DateTime nieuweBegindatumWerkelijk, 
-            int nieuwStraatId, short nieuwWegbeheerderId)
+            int nieuwStraatId, short nieuwWegbeheerderId, string wegbeheerderSoort)
         {
             var wegvakEfemeridenInsert = GetWegvakInsertData(wegvakId);
             var nieuwWegvak = wegvakEfemeridenInsert.SingleOrDefault(x => x.GmeId == nieuwGemeenteId);
@@ -46,10 +42,11 @@ namespace OHx.Testautomatisering.Services
             nieuwWegvak.EinddatumWerkelijk.Should().BeNull();
             nieuwWegvak.SttId.Should().Be(nieuwStraatId);
             nieuwWegvak.WbrId.Should().Be(nieuwWegbeheerderId);
+            nieuwWegvak.Wegbeheerdersoort.Should().Be(wegbeheerderSoort);
         }
 
         public void CheckOudWegvakEfemeridenInsert(long wegvakId, short oudGemeenteId, DateTime OudeBegindatumWerkelijk,
-            DateTime OudeEinddatumWerkelijk, int oudStraatId, short oudWegbeheerderId)
+            DateTime OudeEinddatumWerkelijk, int oudStraatId, short oudWegbeheerderId, string wegbeheerderSoort)
         {
             var wegvakEfemeridenInsert = GetWegvakInsertData(wegvakId);
             var oudWegvak = wegvakEfemeridenInsert.SingleOrDefault(x => x.GmeId == oudGemeenteId);
@@ -58,6 +55,7 @@ namespace OHx.Testautomatisering.Services
             oudWegvak.EinddatumWerkelijk.Should().Be(OudeEinddatumWerkelijk);
             oudWegvak.SttId.Should().Be(oudStraatId);
             oudWegvak.WbrId.Should().Be(oudWegbeheerderId);
+            oudWegvak.Wegbeheerdersoort.Should().Be(wegbeheerderSoort);
         }
         public void CheckWegvakEfemeridenUpdate(long wegvakId, DateTime begindatumWerkelijkOud,
              DateTime begindatumVastleggingOud)
@@ -72,6 +70,11 @@ namespace OHx.Testautomatisering.Services
             short oudGemeenteId, int oudStraatId, DateTime oudBegindatumWerkelijk, DateTime oudeEinddatumWerkelijk, DateTime bagUpdateDatum)
         {
             var wegvakEfemeriden = GetWegvakEfemeriden(wegvakId);
+
+            if (wegvakEfemeriden.Count() != 3)
+            {
+                throw new Exception($"Er zijn geen 3 records gevonden in nww_wegvak_efemeriden voor wegvak {wegvakId}");
+            }
 
             var oudWegvakEindVastlegging = wegvakEfemeriden.SingleOrDefault(x => x.EinddatumVastlegging == bagUpdateDatum.AddDays(-1));
             oudWegvakEindVastlegging.WbrId.Should().Be(oudWegbeheerderId);
@@ -91,9 +94,14 @@ namespace OHx.Testautomatisering.Services
         }
 
         public void CheckNieuwWegvakNwwWegvakEfemeriden(long wegvakId, DateTime nieuweBegindatumWerkelijk, short nieuwWegbeheerderId,
-            int nieuwStraatId, short nieuwGemeenteId, DateTime bagUpdateDatum)
+            int nieuwStraatId, short nieuwGemeenteId, DateTime bagUpdateDatum, string wegbeheerderSoort)
         {
             var wegvakEfemeriden = GetWegvakEfemeriden(wegvakId);
+
+            if (wegvakEfemeriden.Count() != 3)
+            {
+                throw new Exception($"Er zijn geen 3 records gevonden in nww_wegvak_efemeriden voor wegvak {wegvakId}");
+            }
 
             var nieuwWegvak = wegvakEfemeriden.SingleOrDefault(x => x.BegindatumWerkelijk == nieuweBegindatumWerkelijk);
             nieuwWegvak.WbrId.Should().Be(nieuwWegbeheerderId);
@@ -102,6 +110,7 @@ namespace OHx.Testautomatisering.Services
             nieuwWegvak.BegindatumVastlegging.Should().Be(bagUpdateDatum);
             nieuwWegvak.EinddatumWerkelijk.Should().BeNull();
             nieuwWegvak.EinddatumVastlegging.Should().BeNull();
+            nieuwWegvak.Wegbeheerdersoort.Should().Be(wegbeheerderSoort);
         }
 
         public short GetGemeenteId(string gemeentenaam)
@@ -116,16 +125,25 @@ namespace OHx.Testautomatisering.Services
             return gemeenten[0].Id;
         }
 
-        public int GetStraatId(string straatNaam, int gemeenteId)
+        public string GetStraattype(string straatNaam, short gemeenteId)
         {
-            var straat = _nwwDbContext.GgaStraten.Where(x => x.Naam == straatNaam && x.GmeId == gemeenteId).ToList();
+            var straat = GetStraat(gemeenteId, straatNaam);
 
-            if (straat.Count() == 0)
-            {
-                throw new Exception($"Er is geen record gevonden in gga_straten voor de straat {straatNaam} in de gemeente met id {gemeenteId}");
-            }
+            return straat.SttType;
+        }
 
-            return straat[0].Id;
+        public int GetStraatId(string straatNaam, short gemeenteId)
+        {
+            var straat = GetStraat(gemeenteId, straatNaam);
+
+            return straat.Id;
+        }
+
+        public bool IsStraatPresentInBagUpdateStratenInsert(string straatNaam, short gemeenteId)
+        {
+            var straat = _ohxSchrijfDbContext.OhxBagupdateGgaStratenI.Any(x => x.Naam == straatNaam && x.GmeId == gemeenteId);
+
+            return straat;
         }
 
         public short GetWegbeheerderIdGemeente(string gemeente)
@@ -141,6 +159,123 @@ namespace OHx.Testautomatisering.Services
             }
 
             return wegbeheerder[0].Id;
+        }
+
+        public void WegvakIsNietMeegenomenInBagUpdateCheck(long wegvakId)
+        {
+            var wegvakDiff = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnDiff.Where(x => x.WvkId == wegvakId).ToList();
+            wegvakDiff.Should().HaveCount(0);
+
+            var wegvakInsert = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnI.Where(x => x.WvkId == wegvakId).ToList();
+            wegvakInsert.Should().HaveCount(0);
+
+            var wegvakUpdate = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnU.Where(x => x.WvkId == wegvakId).ToList();
+            wegvakUpdate.Should().HaveCount(0);
+        }
+
+        public void CheckFoutmeldingWegvak(long wegvakId, string melding)
+        {
+            var efnMelding = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnMelding.Where(x => x.WvkId == wegvakId).ToList();
+
+            if (efnMelding.Count() == 0)
+            {
+                throw new Exception($"Er is geen record gevonden in efn_melding voor de wegvakId {wegvakId}");
+            }
+
+            efnMelding[0].Melding.Should().Contain(melding);
+        }
+
+        public string GetWegbeheerderSoortFromWegvakEfemeriden(long wegvakId)
+        {
+            var wegvakEfemeride = GetWegvakEfemeriden(wegvakId);
+
+            return wegvakEfemeride[0].Wegbeheerdersoort;
+        }
+
+        public string GetWegbeheerderSoortFromWegbeheerder(short wegbeheerderId)
+        {
+            var wegbeheerder = _nwwDbContext.NwwWegbeheerders.Where(x => x.Id == wegbeheerderId).ToList();
+
+            if (!wegbeheerder.Any())
+            {
+                throw new Exception($"Er is geen record gevonden in nww_wegbeheerders voor wegbeheerder met Id {wegbeheerderId}");
+            }
+
+            return wegbeheerder[0].Soort;
+        }
+
+        public short GetGemeenteIdFromStraten(string straatnaam)
+        {
+            var straat = _nwwDbContext.GgaStraten.Where(x => x.Naam == straatnaam).ToList();
+
+            if (!straat.Any())
+            {
+                throw new Exception($"Er is geen record gevonden in gga_straten voor de straat {straatnaam}");
+            }
+
+            return straat[0].GmeId;
+        }
+
+        public short? GetGemeenteIdFromWegvakefemeriden(long wegvakId)
+        {
+            var wegvakefemeride = _nwwDbContext.NwwWegvakEfemeriden.Where(x => x.WvkId == wegvakId).ToList();
+
+            if (!wegvakefemeride.Any())
+            {
+                throw new Exception($"Er is geen record gevonden in nww_wegvak_efemeriden voor wegvakId {wegvakId}");
+            }
+
+            return wegvakefemeride[0].GmeId;
+        }
+
+        public void CheckHectopuntenInHectopuntenInsert(long wegvakId, int aantalHectopunten, DateTime oudeBegindatumWerkelijk, 
+            DateTime nieuweBegindatumWerkelijk)
+        {
+            var hectoputenInsert = GetHectopuntenInsertData(wegvakId);
+
+            hectoputenInsert.Count().Should().Be(aantalHectopunten * 2);
+
+            hectoputenInsert.Count(x => x.WeeBegindatumWerkelijk == oudeBegindatumWerkelijk).Should().Be(aantalHectopunten);
+            hectoputenInsert.Count(x => x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectopunten);
+        }
+
+        public void CheckHectopuntenInNwwHectopunten(long wegvakId, int aantalHectopunten, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
+            DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk)
+        {
+            var hectopunten = GetNwwHectopuntenData(wegvakId);
+
+            hectopunten.Count().Should().Be(aantalHectopunten * 3);
+
+            hectopunten.Count(x => x.WeeBegindatumVastlegging == oudeBegindatumVastlegging && 
+            x.WeeBegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalHectopunten);
+            hectopunten.Count(x => x.WeeBegindatumVastlegging == datumBagUpdate && 
+            x.WeeBegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalHectopunten);
+            hectopunten.Count(x => x.WeeBegindatumVastlegging == datumBagUpdate &&
+            x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectopunten);
+        }
+
+        private List<NwwHectopunten> GetNwwHectopuntenData(long wegvakId)
+        {
+            var hectopunten = _nwwDbContext.NwwHectopunten.Where(x => x.WeeWvkId == wegvakId).ToList();
+
+            if (!hectopunten.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_hectopunten tabel");
+            }
+
+            return hectopunten;
+        }
+
+        private List<OhxBagNwwHectopuntenI> GetHectopuntenInsertData(long wegvakId)
+        {
+            var hectopuntenInsert = _ohxSchrijfDbContext.OhxBagNwwHectopuntenI.Where(x => x.WeeWvkId == wegvakId).ToList();
+
+            if (!hectopuntenInsert.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_hectopunten_i tabel");
+            }
+
+            return hectopuntenInsert;
         }
 
         private OhxBagNwwWegvakEfnDiff GetWegvakDiffData(long wegvakId)
@@ -159,7 +294,7 @@ namespace OHx.Testautomatisering.Services
         {
             var efnInsert = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnI.Where(x => x.WvkId == wegvakId).ToList();
 
-            if (efnInsert.Count() == 0)
+            if (!efnInsert.Any())
             {
                 throw new Exception($"Er is geen record gevonden in wegvak_efn_diff voor wegvak {wegvakId}");
             }
@@ -171,7 +306,7 @@ namespace OHx.Testautomatisering.Services
         {
             var wegvakEfemeride = _nwwDbContext.NwwWegvakEfemeriden.Where(x => x.WvkId == wegvakId).ToList();
 
-            if (wegvakEfemeride.Count() != 3)
+            if (!wegvakEfemeride.Any())
             {
                 throw new Exception($"Er zijn geen 3 records gevonden in nww_wegvak_efemeriden voor wegvak {wegvakId}");
             }
@@ -182,12 +317,24 @@ namespace OHx.Testautomatisering.Services
         {
             var efnUpdate = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnU.Where(x => x.WvkId == wegvakId).ToList();
 
-            if (efnUpdate.Count() == 0)
+            if (!efnUpdate.Any())
             {
                 throw new Exception($"Er is geen record in wegvak_efn_U voor wegvak {wegvakId}");
             }
 
             return efnUpdate[0];
+        }
+
+        private GgaStraten GetStraat(short gemeenteId, string straatNaam)
+        {
+            var straat = _nwwDbContext.GgaStraten.Where(x => x.Naam == straatNaam && x.GmeId == gemeenteId).ToList();
+
+            if (straat.Count() == 0)
+            {
+                throw new Exception($"Er is geen record gevonden in gga_straten voor de straat {straatNaam} in de gemeente met id {gemeenteId}");
+            }
+
+            return straat[0];
         }
     }
 }

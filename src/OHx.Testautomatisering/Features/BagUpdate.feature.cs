@@ -86,6 +86,9 @@ namespace OHx.Testautomatisering.Features
         [Xunit.InlineDataAttribute("Kopenhagen", "999999998", "Tirana", "Academiestraat_N", "Academiestraat_N", "de gemeente", new string[0])]
         [Xunit.InlineDataAttribute("Kopenhagen", "999999997", "Tirana", "Academiestraat_N", "Academiestraat_N", "de gemeente", new string[0])]
         [Xunit.InlineDataAttribute("Kopenhagen", "999999996", "Tirana", "Academiestraat_B", "Academiestraat_N", "de gemeente", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999995", "Tirana", "Academiestraat_B", "Academiestraat_N", "Berlijn", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999994", "Tirana", "Academiestraat_B", "Academiestraat_N", "Sofia", new string[0])]
+        [Xunit.InlineDataAttribute("Tallinn", "999999988", "Tirana", "Academiestraat_B", "Academiestraat_N", "de provincie", new string[0])]
         public virtual void EenWegvakValtNaDeBAGUpdateOnderEenNieuweGemeente(string oudeGemeente, string wegvakId, string nieuweGemeente, string oudeStraat, string nieuweStraat, string wegbeheerder, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -136,6 +139,592 @@ testRunner.Then("is het wegvak meegenomen in de BAG update", ((string)(null)), (
 #line hidden
 #line 12
 testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak valt na de BAG upddate in een onbekende gemeente")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak valt na de BAG upddate in een onbekende gemeente")]
+        public virtual void EenWegvakValtNaDeBAGUpddateInEenOnbekendeGemeente()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak valt na de BAG upddate in een onbekende gemeente", "Achtergrond: De nieuwe gemeente is niet bekend in BAG", tagsOfScenario, argumentsOfScenario);
+#line 24
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 27
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999993 onder on onbekende gemeente komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 28
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 29
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Een wegvak valt na de BAG update gedeeltelijk in de nieuwe gemeente. Het wegvak w" +
+            "ordt niet meegenomen in de BAG update")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak valt na de BAG update gedeeltelijk in de nieuwe gemeente. Het wegvak w" +
+            "ordt niet meegenomen in de BAG update")]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999992", "Tirana", "de lengte van het wegvak dat in de nieuwe gemeente ligt", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999990", "Tirana", "de lengte van het wegvak dat uit de eigen gemeente mag steken", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999989", "Tirana", "de lengte van het wegvak dat uit de eigen gemeente mag steken", new string[0])]
+        public virtual void EenWegvakValtNaDeBAGUpdateGedeeltelijkInDeNieuweGemeente_HetWegvakWordtNietMeegenomenInDeBAGUpdate(string oudeGemeente, string wegvakId, string nieuweGemeente, string meldingOnderwerp, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("oude gemeente", oudeGemeente);
+            argumentsOfScenario.Add("wegvak id", wegvakId);
+            argumentsOfScenario.Add("nieuwe gemeente", nieuweGemeente);
+            argumentsOfScenario.Add("melding onderwerp", meldingOnderwerp);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak valt na de BAG update gedeeltelijk in de nieuwe gemeente. Het wegvak w" +
+                    "ordt niet meegenomen in de BAG update", "Achtergrond: Deel van het wegvak ligt in de oude gemeente, wegvak blijft onder ou" +
+                    "de gemeente vallen", tagsOfScenario, argumentsOfScenario);
+#line 31
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 34
+testRunner.Given(string.Format("een gebruiker de grens van de gemeente \'{0}\' heeft aangepast waardoor minder dan " +
+                            "twee meter van het wegvak met id {1} in de gemeente \'{2}\' komt te liggen", oudeGemeente, wegvakId, nieuweGemeente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 35
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 36
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 37
+testRunner.And(string.Format("is er een melding betreffende \'{0}\' weggeschreven in de meldingen tabel", meldingOnderwerp), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak valt na de BAG update voor meer dan 2 meter in een nieuwe gemeente, mi" +
+            "nder dan 2 meter in de oude gemeente")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak valt na de BAG update voor meer dan 2 meter in een nieuwe gemeente, mi" +
+            "nder dan 2 meter in de oude gemeente")]
+        public virtual void EenWegvakValtNaDeBAGUpdateVoorMeerDan2MeterInEenNieuweGemeenteMinderDan2MeterInDeOudeGemeente()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak valt na de BAG update voor meer dan 2 meter in een nieuwe gemeente, mi" +
+                    "nder dan 2 meter in de oude gemeente", null, tagsOfScenario, argumentsOfScenario);
+#line 46
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 48
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999991 onder gemeente \'Tirana\' komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 49
+testRunner.And("het wegvak verschuift door de aanpassing van de straat \'Academiestraat_B\' in \'Kop" +
+                        "enhagen\' naar \'Academiestraat_N\' in \'Tirana\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 50
+testRunner.And("\'Nicosia\' is de wegbeheerder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 51
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 52
+testRunner.Then("is het wegvak meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 53
+testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="De wegbeheerdersoort staat onjuist in de wegvakken tabel")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "De wegbeheerdersoort staat onjuist in de wegvakken tabel")]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999987", "Tirana", "Berlijn", "de wegbeheerder", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999986", "Tirana", "Tallinn", "de wegbeheerder", new string[0])]
+        public virtual void DeWegbeheerdersoortStaatOnjuistInDeWegvakkenTabel(string oudeGemeente, string wegvakId, string nieuweGemeente, string wegbeheerder, string meldingOnderwerp, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("oude gemeente", oudeGemeente);
+            argumentsOfScenario.Add("wegvak id", wegvakId);
+            argumentsOfScenario.Add("nieuwe gemeente", nieuweGemeente);
+            argumentsOfScenario.Add("wegbeheerder", wegbeheerder);
+            argumentsOfScenario.Add("melding onderwerp", meldingOnderwerp);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("De wegbeheerdersoort staat onjuist in de wegvakken tabel", "Achtergrond: wegbeheersoort in nww_wegvakefemeriden en nww_wegbeheerders verschil" +
+                    "t voor het wegbeheerderId", tagsOfScenario, argumentsOfScenario);
+#line 55
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 58
+testRunner.Given(string.Format("een gebruiker de grens van de gemeente \'{0}\' heeft aangepast waardoor het wegvak " +
+                            "met id {1} onder gemeente \'{2}\' komt te vallen", oudeGemeente, wegvakId, nieuweGemeente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 59
+testRunner.And(string.Format("\'{0}\' is de wegbeheerder", wegbeheerder), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 60
+testRunner.And("de wegbeheerdersoort staat onjuist in de wegvakken tabel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 61
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 62
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 63
+testRunner.And(string.Format("is er een melding betreffende \'{0}\' weggeschreven in de meldingen tabel", meldingOnderwerp), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Een wegvak valt na de BAG update onder een nieuwe gemeente, de oude straat is nog" +
+            " niet bekend in BAG, de nieuwe straat is niet gevonden")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak valt na de BAG update onder een nieuwe gemeente, de oude straat is nog" +
+            " niet bekend in BAG, de nieuwe straat is niet gevonden")]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999985", "Tirana", "Achiel Van Ackerplein", "Academiestraat_N", "de gemeente", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999982", "Tirana", "Annuntiatenstraat", "Academiestraat_N", "de gemeente", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999979", "Tirana", "Albrecht Rodenbachstraat", "Academiestraat_N", "de gemeente", new string[0])]
+        public virtual void EenWegvakValtNaDeBAGUpdateOnderEenNieuweGemeenteDeOudeStraatIsNogNietBekendInBAGDeNieuweStraatIsNietGevonden(string oudeGemeente, string wegvakId, string nieuweGemeente, string oudeStraat, string nieuweStraat, string wegbeheerder, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("oude gemeente", oudeGemeente);
+            argumentsOfScenario.Add("wegvak id", wegvakId);
+            argumentsOfScenario.Add("nieuwe gemeente", nieuweGemeente);
+            argumentsOfScenario.Add("oude straat", oudeStraat);
+            argumentsOfScenario.Add("nieuwe straat", nieuweStraat);
+            argumentsOfScenario.Add("wegbeheerder", wegbeheerder);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak valt na de BAG update onder een nieuwe gemeente, de oude straat is nog" +
+                    " niet bekend in BAG, de nieuwe straat is niet gevonden", null, tagsOfScenario, argumentsOfScenario);
+#line 70
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 72
+testRunner.Given(string.Format("een gebruiker de grens van de gemeente \'{0}\' heeft aangepast waardoor het wegvak " +
+                            "met id {1} onder gemeente \'{2}\' komt te vallen", oudeGemeente, wegvakId, nieuweGemeente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 73
+testRunner.And(string.Format("het wegvak verschuift door de aanpassing van de straat \'{0}\' in \'{1}\' naar \'{2}\' " +
+                            "in \'{3}\'", oudeStraat, oudeGemeente, nieuweStraat, nieuweGemeente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 74
+testRunner.And(string.Format("de straat \'{0}\' is nog niet bekend in BAG", oudeStraat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 75
+testRunner.And("de nieuwe straat is niet gevonden", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 76
+testRunner.And(string.Format("\'{0}\' is de wegbeheerder", wegbeheerder), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 77
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 78
+testRunner.Then("is het wegvak meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 79
+testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 80
+testRunner.And(string.Format("is de straat \'{0}\' toegevoegd als vervallen straat in de NWW database", oudeStraat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Minder dan 2 meter van een wegvak valt na de BAG update onder een nieuwe gemeente" +
+            ", de oude gemeente is nog niet bekend in BAG.")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Minder dan 2 meter van een wegvak valt na de BAG update onder een nieuwe gemeente" +
+            ", de oude gemeente is nog niet bekend in BAG.")]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999984", "Tirana", "Ankerplein", "de lengte van het wegvak dat in de nieuwe gemeente ligt", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999983", "Tirana", "Annuntiatenstraat", "de lengte van het wegvak dat in de nieuwe gemeente ligt", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999981", "Tirana", "Arsenaalstraat", "de lengte van het wegvak dat in de nieuwe gemeente ligt", new string[0])]
+        [Xunit.InlineDataAttribute("Kopenhagen", "999999980", "Tirana", "Arsenaalstraat", "de lengte van het wegvak dat in de nieuwe gemeente ligt", new string[0])]
+        public virtual void MinderDan2MeterVanEenWegvakValtNaDeBAGUpdateOnderEenNieuweGemeenteDeOudeGemeenteIsNogNietBekendInBAG_(string oudeGemeente, string wegvakId, string nieuweGemeente, string straat, string melding, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("oude gemeente", oudeGemeente);
+            argumentsOfScenario.Add("wegvak id", wegvakId);
+            argumentsOfScenario.Add("nieuwe gemeente", nieuweGemeente);
+            argumentsOfScenario.Add("straat", straat);
+            argumentsOfScenario.Add("melding", melding);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Minder dan 2 meter van een wegvak valt na de BAG update onder een nieuwe gemeente" +
+                    ", de oude gemeente is nog niet bekend in BAG.", null, tagsOfScenario, argumentsOfScenario);
+#line 89
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 92
+testRunner.Given(string.Format("een gebruiker de grens van de gemeente \'{0}\' heeft aangepast waardoor minder dan " +
+                            "twee meter van het wegvak met id {1} in de gemeente \'{2}\' komt te liggen", oudeGemeente, wegvakId, nieuweGemeente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 93
+testRunner.And(string.Format("de straat \'{0}\' is nog niet bekend in BAG", straat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 94
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 95
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 96
+testRunner.And(string.Format("is er een melding betreffende \'{0}\' weggeschreven in de meldingen tabel", melding), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 97
+testRunner.And("is de straat \'Ankerplein\' toegevoegd als vervallen straat in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak valt na de BAG update onder een nieuwe gemeente, de nieuwe straat is n" +
+            "iet gevonden en oude straatnaam is \'P\', wegvak wordt niet meegenomen in de BAG u" +
+            "pdate")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak valt na de BAG update onder een nieuwe gemeente, de nieuwe straat is n" +
+            "iet gevonden en oude straatnaam is \'P\', wegvak wordt niet meegenomen in de BAG u" +
+            "pdate")]
+        public virtual void EenWegvakValtNaDeBAGUpdateOnderEenNieuweGemeenteDeNieuweStraatIsNietGevondenEnOudeStraatnaamIsPWegvakWordtNietMeegenomenInDeBAGUpdate()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak valt na de BAG update onder een nieuwe gemeente, de nieuwe straat is n" +
+                    "iet gevonden en oude straatnaam is \'P\', wegvak wordt niet meegenomen in de BAG u" +
+                    "pdate", null, tagsOfScenario, argumentsOfScenario);
+#line 107
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 109
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999978 onder gemeente \'Tirana\' komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 110
+testRunner.And("het wegvak verschuift door de aanpassing van de straat \'Adriaan Willaertstraat\' i" +
+                        "n \'Kopenhagen\' naar \'Academiestraat_N\' in \'Tirana\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 111
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 112
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 113
+testRunner.And("is er een melding betreffende \'de gemeente\' weggeschreven in de meldingen tabel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="De gemeente in de straten tabel en de wegvakefemeridentabel komt niet overeen. We" +
+            "gvak wordt niet meegenomen in de BAG update.")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "De gemeente in de straten tabel en de wegvakefemeridentabel komt niet overeen. We" +
+            "gvak wordt niet meegenomen in de BAG update.")]
+        public virtual void DeGemeenteInDeStratenTabelEnDeWegvakefemeridentabelKomtNietOvereen_WegvakWordtNietMeegenomenInDeBAGUpdate_()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("De gemeente in de straten tabel en de wegvakefemeridentabel komt niet overeen. We" +
+                    "gvak wordt niet meegenomen in de BAG update.", null, tagsOfScenario, argumentsOfScenario);
+#line 115
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 117
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999977 onder gemeente \'Tirana\' komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 118
+testRunner.And("het wegvak verschuift door de aanpassing van de straat \'Academiestraat_B\' in \'Kop" +
+                        "enhagen\' naar \'Academiestraat_N\' in \'Tirana\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 119
+testRunner.And("de gemeente staat verkeerd in de wegvakken tabel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 120
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 121
+testRunner.Then("is het wegvak niet meegenomen in de BAG Update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 122
+testRunner.And("is er een melding betreffende \'de gemeente\' weggeschreven in de meldingen tabel", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak met hectopunten valt na de BAG update onder een nieuwe gemeente, de he" +
+            "ctopunten worden ook geupdatet")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak met hectopunten valt na de BAG update onder een nieuwe gemeente, de he" +
+            "ctopunten worden ook geupdatet")]
+        public virtual void EenWegvakMetHectopuntenValtNaDeBAGUpdateOnderEenNieuweGemeenteDeHectopuntenWordenOokGeupdatet()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak met hectopunten valt na de BAG update onder een nieuwe gemeente, de he" +
+                    "ctopunten worden ook geupdatet", null, tagsOfScenario, argumentsOfScenario);
+#line 124
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 126
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999976 onder gemeente \'Tirana\' komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 127
+testRunner.And("het wegvak verschuift door de aanpassing van de straat \'Academiestraat_N\' in \'Kop" +
+                        "enhagen\' naar \'Academiestraat_N\' in \'Tirana\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 128
+testRunner.And("\'de gemeente\' is de wegbeheerder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 129
+testRunner.And("het wegvak heeft 4 hectopunten", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 130
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 131
+testRunner.Then("is het wegvak meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 132
+testRunner.And("zijn de hectopunten meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 133
+testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 134
+testRunner.And("zijn de hectopunten geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak met hectointervallen valt na de BAG update onder een nieuwe gemeente, " +
+            "de hectointervallen worden ook geupdatet")]
+        [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
+        [Xunit.TraitAttribute("Description", "Een wegvak met hectointervallen valt na de BAG update onder een nieuwe gemeente, " +
+            "de hectointervallen worden ook geupdatet")]
+        public virtual void EenWegvakMetHectointervallenValtNaDeBAGUpdateOnderEenNieuweGemeenteDeHectointervallenWordenOokGeupdatet()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak met hectointervallen valt na de BAG update onder een nieuwe gemeente, " +
+                    "de hectointervallen worden ook geupdatet", null, tagsOfScenario, argumentsOfScenario);
+#line 136
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 138
+testRunner.Given("een gebruiker de grens van de gemeente \'Kopenhagen\' heeft aangepast waardoor het " +
+                        "wegvak met id 999999975 onder gemeente \'Tirana\' komt te vallen", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Gegeven ");
+#line hidden
+#line 139
+testRunner.And("het wegvak verschuift door de aanpassing van de straat \'Academiestraat_N\' in \'Kop" +
+                        "enhagen\' naar \'Academiestraat_N\' in \'Tirana\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 140
+testRunner.And("\'de gemeente\' is de wegbeheerder", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 141
+testRunner.And("het wegvak heeft 4 hectopunten", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 142
+testRunner.When("de Bag Update is afgerond", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Als ");
+#line hidden
+#line 143
+testRunner.Then("is het wegvak meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dan ");
+#line hidden
+#line 144
+testRunner.And("zijn de hectopunten meegenomen in de BAG update", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 145
+testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
+#line hidden
+#line 146
+testRunner.And("zijn de hectopunten geupdatet in de NWW database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "En ");
 #line hidden
             }
             this.ScenarioCleanup();

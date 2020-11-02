@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System;
 
 namespace OHx.Testautomatisering.Testdata
 {
@@ -13,6 +14,10 @@ namespace OHx.Testautomatisering.Testdata
         public int NieuwStraatId { get; set; }
         public short OudWegbeheerderId { get; set; }
         public short NieuwWegbeheerderId { get; set; }
+        public string WegbeheerderSoort { get; set; }
+        public string OudeStraatnaam { get; set; }
+        public string NieuweStraatnaam { get; set; }
+        public int AantalHectopunten { get; set; }
         public DateTime OudeBegindatumWerkelijk { get; set; } = new DateTime(2018, 6, 1);
         public DateTime OudeBegindatumVastlegging { get; set; } = new DateTime(2018, 1, 1);
         public DateTime OudeEinddatumWerkelijk { get; set; } = new DateTime(2018, 12, 31);
