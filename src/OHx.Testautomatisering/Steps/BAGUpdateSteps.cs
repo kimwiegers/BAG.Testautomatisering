@@ -122,6 +122,18 @@ namespace OHx.Testautomatisering.Steps
             _wegvakData.AantalHectopunten = aantalHectopunten;
         }
 
+        [Given(@"het wegvak heeft (.*) hectointerval")]
+        public void GegevenHetWegvakHeeftHectointerval(int aantalhectointervallen)
+        {
+            _wegvakData.AantalHectointervallen = aantalhectointervallen;
+        }
+
+        [Given(@"het wegvak is onderdeel van (.*) routes")]
+        public void GegevenHetWegvakIsOnderdeelVanRoutes(int aantalRoutes)
+        {
+            _wegvakData.AantalRoutes = aantalRoutes;
+        }
+
         [When(@"de Bag Update is afgerond")]
         public void AlsDeBagUpdateIsAfgerond()
         {
@@ -135,11 +147,39 @@ namespace OHx.Testautomatisering.Steps
                 _wegvakData.OudeBegindatumWerkelijk, _wegvakData.NieuweBegindatumWerkelijk);
         }
 
+        [Then(@"zijn de hectointervallen meegenomen in de BAG update")]
+        public void DanZijnDeHectointervallenMeegenomenInDeBAGUpdate()
+        {
+            _bagUpdateService.CheckHectointervallenInHectointervallenInsert(_wegvakData.WegvakId, _wegvakData.AantalHectointervallen,
+               _wegvakData.OudeBegindatumWerkelijk, _wegvakData.NieuweBegindatumWerkelijk);
+        }
+
+        [Then(@"zijn de routes meegenomen in de BAG update")]
+        public void DanZijnDeRoutesMeegenomenInDeBAGUpdate()
+        {
+            _bagUpdateService.CheckRoutesInWegvakInRoutesInsert(_wegvakData.WegvakId, _wegvakData.AantalRoutes,
+                _wegvakData.OudeBegindatumWerkelijk, _wegvakData.NieuweBegindatumWerkelijk);
+        }
+
         [Then(@"zijn de hectopunten geupdatet in de NWW database")]
         public void DanZijnDeHectopuntenGeupdatetInDeNWWDatabase()
         {
             _bagUpdateService.CheckHectopuntenInNwwHectopunten(_wegvakData.WegvakId, _wegvakData.AantalHectopunten,
                 _wegvakData.OudeBegindatumWerkelijk, DatumBagUpdate, _wegvakData.OudeBegindatumVastlegging, _wegvakData.NieuweBegindatumWerkelijk);
+        }
+
+        [Then(@"zijn de hectointervallen geupdatet in de NWW database")]
+        public void DanZijnDeHectointervallenGeupdatetInDeNWWDatabase()
+        {
+            _bagUpdateService.CheckHectointervallenInNwwHectointervallen(_wegvakData.WegvakId, _wegvakData.AantalHectointervallen,
+               _wegvakData.OudeBegindatumWerkelijk, DatumBagUpdate, _wegvakData.OudeBegindatumVastlegging, _wegvakData.NieuweBegindatumWerkelijk);
+        }
+
+        [Then(@"zijn de routes geupdatet in de NWW database")]
+        public void DanZijnDeRoutesGeupdatetInDeNWWDatabase()
+        {
+            _bagUpdateService.CheckRoutesInNwwWegvakInRoutes(_wegvakData.WegvakId, _wegvakData.AantalRoutes,
+               _wegvakData.OudeBegindatumWerkelijk, DatumBagUpdate, _wegvakData.OudeBegindatumVastlegging, _wegvakData.NieuweBegindatumWerkelijk);
         }
 
         [Then(@"is het wegvak niet meegenomen in de BAG Update")]
