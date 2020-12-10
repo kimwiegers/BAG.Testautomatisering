@@ -18,6 +18,8 @@ namespace OHx.Testautomatisering.Testdata
         public string OudeStraatnaam { get; set; }
         public string NieuweStraatnaam { get; set; }
         public int AantalHectopunten { get; set; }
+        public int AantalHectointervallen { get; set; }
+        public int AantalRoutes { get; set; }
         public DateTime OudeBegindatumWerkelijk { get; set; } = new DateTime(2018, 6, 1);
         public DateTime OudeBegindatumVastlegging { get; set; } = new DateTime(2018, 1, 1);
         public DateTime OudeEinddatumWerkelijk { get; set; } = new DateTime(2018, 12, 31);

@@ -14,12 +14,15 @@ namespace OHx.Testautomatisering.Services
         private readonly OhxSchrijfDbContext _ohxSchrijfDbContext;
         private readonly NwaDbContext _nwaDbContext;
         private readonly NwwDbContext _nwwDbContext;
+        private readonly WegvakTestData _wegvakTestData;
 
-        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext)
+        public BagUpdateService(OhxSchrijfDbContext ohxSchrijfDbContext, NwaDbContext nwaDbContext, NwwDbContext nwwDbContext,
+            WegvakTestData wegvakTestData)
         {
             _ohxSchrijfDbContext = ohxSchrijfDbContext;
             _nwaDbContext = nwaDbContext;
             _nwwDbContext = nwwDbContext;
+            _wegvakTestData = wegvakTestData;
         }
 
         public void CheckWegvakEfemeridenDiff(long wegvakId, short nieuwGemeenteId, short oudGemeenteId, DateTime begindatumVastlegging, DateTime begindatumWerkelijkheid)
@@ -239,6 +242,28 @@ namespace OHx.Testautomatisering.Services
             hectoputenInsert.Count(x => x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectopunten);
         }
 
+        public void CheckHectointervallenInHectointervallenInsert(long wegvakId, int aantalHectointervallen, DateTime oudeBegindatumWerkelijk,
+            DateTime nieuweBegindatumWerkelijk)
+        {
+            var hectointervallenInsert = GetHectointervallenInsertData(wegvakId);
+
+            hectointervallenInsert.Count().Should().Be(aantalHectointervallen * 2);
+
+            hectointervallenInsert.Count(x => x.BegindatumWerkelijk == oudeBegindatumWerkelijk).Should().Be(aantalHectointervallen);
+            hectointervallenInsert.Count(x => x.BegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectointervallen);
+        }
+
+        public void CheckRoutesInWegvakInRoutesInsert(long wegvakId, int aantalRoutes, DateTime oudeBegindatumWerkelijk,
+            DateTime nieuweBegindatumWerkelijk)
+        {
+            var wegvakInRoutesInsert = GetWegvakInRoutesInsertData(wegvakId);
+
+            wegvakInRoutesInsert.Count().Should().Be(aantalRoutes * 2);
+
+            wegvakInRoutesInsert.Count(x => x.WeeBegindatumWerkelijk == oudeBegindatumWerkelijk).Should().Be(aantalRoutes);
+            wegvakInRoutesInsert.Count(x => x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalRoutes);
+        }
+
         public void CheckHectopuntenInNwwHectopunten(long wegvakId, int aantalHectopunten, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
             DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk)
         {
@@ -254,6 +279,60 @@ namespace OHx.Testautomatisering.Services
             x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectopunten);
         }
 
+        public void CheckHectointervallenInNwwHectointervallen(long wegvakId, int aantalHectointervallen, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
+            DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk)
+        {
+            var hectointervallen = GetNwwHectointervallenData(wegvakId);
+
+            hectointervallen.Count().Should().Be(aantalHectointervallen * 3);
+
+            hectointervallen.Count(x => x.BegindatumVastlegging == oudeBegindatumVastlegging &&
+            x.BegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalHectointervallen);
+            hectointervallen.Count(x => x.BegindatumVastlegging == datumBagUpdate &&
+            x.BegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalHectointervallen);
+            hectointervallen.Count(x => x.BegindatumVastlegging == datumBagUpdate &&
+            x.BegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalHectointervallen);
+        }
+
+        public void CheckRoutesInNwwWegvakInRoutes(long wegvakId, int aantalRoutes, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
+            DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk)
+        {
+            var routes = GetNwwWegvakInroutesData(wegvakId);
+
+            routes.Count().Should().Be(aantalRoutes * 3);
+
+            routes.Count(x => x.WeeBegindatumVastlegging == oudeBegindatumVastlegging &&
+            x.WeeBegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalRoutes);
+            routes.Count(x => x.WeeBegindatumVastlegging == datumBagUpdate &&
+            x.WeeBegindatumWerkelijk == oudeBeginDatumWerkelijk).Should().Be(aantalRoutes);
+            routes.Count(x => x.WeeBegindatumVastlegging == datumBagUpdate &&
+            x.WeeBegindatumWerkelijk == nieuweBegindatumWerkelijk).Should().Be(aantalRoutes);
+        }
+
+        private List<OhxBagNwwHectointervallenI> GetHectointervallenInsertData(long wegvakId)
+        {
+            var hectointervallenInsert = _ohxSchrijfDbContext.OhxBagNwwHectointervallenI.Where(x => x.WvkId == wegvakId).ToList();
+
+            if (!hectointervallenInsert.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_hectointervallen_i tabel");
+            }
+
+            return hectointervallenInsert;
+        }
+
+        private List<OhxBagNwwWegvakInRoutesI> GetWegvakInRoutesInsertData(long wegvakId)
+        {
+            var wegvakInRoutesInsert = _ohxSchrijfDbContext.OhxBagNwwWegvakInRoutesI.Where(x => x.WeeWvkId == wegvakId).ToList();
+
+            if (!wegvakInRoutesInsert.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_hectointervallen_i tabel");
+            }
+
+            return wegvakInRoutesInsert;
+        }
+
         private List<NwwHectopunten> GetNwwHectopuntenData(long wegvakId)
         {
             var hectopunten = _nwwDbContext.NwwHectopunten.Where(x => x.WeeWvkId == wegvakId).ToList();
@@ -264,6 +343,30 @@ namespace OHx.Testautomatisering.Services
             }
 
             return hectopunten;
+        }
+
+        private List<NwwHectoIntervallen> GetNwwHectointervallenData(long wegvakId)
+        {
+            var hectointervallen = _nwwDbContext.NwwHectoIntervallen.Where(x => x.WvkId == wegvakId).ToList();
+
+            if (!hectointervallen.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_hecto_intervallen tabel");
+            }
+
+            return hectointervallen;
+        }
+
+        private List<NwwWegvakInRoutes> GetNwwWegvakInroutesData(long wegvakId)
+        {
+            var routes = _nwwDbContext.NwwWegvakInRoutes.Where(x => x.WeeWvkId == wegvakId).ToList();
+
+            if (!routes.Any())
+            {
+                throw new Exception($"Er is geen record gevonden voor wegvak id {wegvakId} in de nww_wegvak_in_routes tabel");
+            }
+
+            return routes;
         }
 
         private List<OhxBagNwwHectopuntenI> GetHectopuntenInsertData(long wegvakId)

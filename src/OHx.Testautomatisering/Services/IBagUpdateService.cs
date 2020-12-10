@@ -34,5 +34,13 @@ namespace OHx.Testautomatisering.Services
             DateTime nieuweBegindatumWerkelijk);
         void CheckHectopuntenInNwwHectopunten(long wegvakId, int aantalHectopunten, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
             DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk);
+        void CheckHectointervallenInHectointervallenInsert(long wegvakId, int aantalHectointervallen, DateTime oudeBegindatumWerkelijk,
+           DateTime nieuweBegindatumWerkelijk);
+        void CheckHectointervallenInNwwHectointervallen(long wegvakId, int aantalHectointervallen, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
+            DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk);
+        void CheckRoutesInWegvakInRoutesInsert(long wegvakId, int aantalRoutes, DateTime oudeBegindatumWerkelijk,
+            DateTime nieuweBegindatumWerkelijk);
+        void CheckRoutesInNwwWegvakInRoutes(long wegvakId, int aantalRoutes, DateTime oudeBeginDatumWerkelijk, DateTime datumBagUpdate,
+            DateTime oudeBegindatumVastlegging, DateTime nieuweBegindatumWerkelijk);
     }
 }
