@@ -20,7 +20,6 @@ namespace OHx.Testautomatisering.Services
         void CheckOudeWegvakkenNwwWegvakEfemeriden(long wegvakId, DateTime oudeBegindatumVastlegging, short oudWegbeheerderId,
             short oudGemeenteId, int oudStraatId, DateTime oudBegindatumWerkelijk, DateTime oudeEinddatumWerkelijk, DateTime bagUpdateDatum);
         short GetWegbeheerderIdGemeente(string gemeente);
-        short GetGemeenteId(string gemeentenaam);
         int GetStraatId(string straatNaam, short gemeenteId);
         void WegvakIsNietMeegenomenInBagUpdateCheck(long wegvakId);
         void CheckFoutmeldingWegvak(long wegvakId, string melding);

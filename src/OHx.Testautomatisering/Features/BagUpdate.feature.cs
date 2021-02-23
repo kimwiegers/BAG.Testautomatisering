@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace OHx.Testautomatisering.Features
+namespace BagUpdate.Testautomatisering.Features
 {
     using TechTalk.SpecFlow;
     using System;
@@ -31,7 +31,7 @@ namespace OHx.Testautomatisering.Features
 #line 1 "BagUpdate.feature"
 #line hidden
         
-        public BagUpdateFeature(BagUpdateFeature.FixtureData fixtureData, OHx_Testautomatisering_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public BagUpdateFeature(BagUpdateFeature.FixtureData fixtureData, BagUpdate_Testautomatisering_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -144,14 +144,14 @@ testRunner.And("is het wegvak geupdatet in de NWW database", ((string)(null)), (
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak ligt na de BAG upddte in een onbekende gemeente")]
+        [Xunit.SkippableFactAttribute(DisplayName="Een wegvak ligt na de BAG update in een onbekende gemeente")]
         [Xunit.TraitAttribute("FeatureTitle", "BagUpdate")]
-        [Xunit.TraitAttribute("Description", "Een wegvak ligt na de BAG upddte in een onbekende gemeente")]
-        public virtual void EenWegvakLigtNaDeBAGUpddteInEenOnbekendeGemeente()
+        [Xunit.TraitAttribute("Description", "Een wegvak ligt na de BAG update in een onbekende gemeente")]
+        public virtual void EenWegvakLigtNaDeBAGUpdateInEenOnbekendeGemeente()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak ligt na de BAG upddte in een onbekende gemeente", "Achtergrond: De nieuwe gemeente is niet bekend in BAG", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Een wegvak ligt na de BAG update in een onbekende gemeente", "Achtergrond: De nieuwe gemeente is niet bekend in BAG", tagsOfScenario, argumentsOfScenario);
 #line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

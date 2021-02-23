@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Bag.Testautomatisering;
+using FluentAssertions;
 using OHx.Testautomatisering.Services;
 using OHx.Testautomatisering.Testdata;
 using System;
@@ -13,18 +14,20 @@ namespace OHx.Testautomatisering.Steps
         private readonly IBagUpdateService _bagUpdateService;
         private readonly WegvakTestData _wegvakData;
         private static DateTime DatumBagUpdate = new DateTime(2020, 10, 27);
+        private readonly BagShared _bagShared;
 
-        public BAGUpdateSteps(IBagUpdateService bagUpdateService, WegvakTestData wegvakData)
+        public BAGUpdateSteps(IBagUpdateService bagUpdateService, WegvakTestData wegvakData, BagShared bagShared)
         {
             _bagUpdateService = bagUpdateService;
             _wegvakData = wegvakData;
+            _bagShared = bagShared;
         }
 
         [Given(@"een gebruiker de grens van de gemeente '(.*)' heeft aangepast waardoor het wegvak met id (.*) onder gemeente '(.*)' komt te vallen")]
         public void GegevenEenGebruikerDeGrensVanDeGemeenteHeeftAangepastWaardoorHetWegvakMetIdOnderGemeenteKomtTeVallen(string oudeGemeente, long wegvakId, string nieuweGemeente)
         {
-            var oudGemeenteId = _bagUpdateService.GetGemeenteId(oudeGemeente);
-            var nieuwGemeenteId = _bagUpdateService.GetGemeenteId(nieuweGemeente);
+            var oudGemeenteId = _bagShared.GetGemeenteId(oudeGemeente);
+            var nieuwGemeenteId = _bagShared.GetGemeenteId(nieuweGemeente);
             _wegvakData.WegvakId = wegvakId;
             _wegvakData.OudeGemeente = oudeGemeente;
             _wegvakData.OudGemeenteId = oudGemeenteId;
@@ -56,21 +59,21 @@ namespace OHx.Testautomatisering.Steps
             switch(wegbeheerder)
             {
                 case "de gemeente":
-                    _wegvakData.OudWegbeheerderId = _bagUpdateService.GetGemeenteId(_wegvakData.OudeGemeente);
-                    _wegvakData.NieuwWegbeheerderId = _bagUpdateService.GetGemeenteId(_wegvakData.NieuweGemeente);
+                    _wegvakData.OudWegbeheerderId = _bagShared.GetGemeenteId(_wegvakData.OudeGemeente);
+                    _wegvakData.NieuwWegbeheerderId = _bagShared.GetGemeenteId(_wegvakData.NieuweGemeente);
                     _wegvakData.WegbeheerderSoort = "G";
                     break;
                 case "Berlijn":
                 case "Sofia":
                 case "Nicosia":
                 case "Tallinn":
-                    _wegvakData.OudWegbeheerderId = _bagUpdateService.GetGemeenteId(wegbeheerder);
-                    _wegvakData.NieuwWegbeheerderId = _bagUpdateService.GetGemeenteId(wegbeheerder);
+                    _wegvakData.OudWegbeheerderId = _bagShared.GetGemeenteId(wegbeheerder);
+                    _wegvakData.NieuwWegbeheerderId = _bagShared.GetGemeenteId(wegbeheerder);
                     _wegvakData.WegbeheerderSoort = _bagUpdateService.GetWegbeheerderSoortFromWegbeheerder(_wegvakData.OudWegbeheerderId);
                     break;
                 case "de provincie":
-                    _wegvakData.OudWegbeheerderId = _bagUpdateService.GetGemeenteId(_wegvakData.OudeGemeente);
-                    _wegvakData.NieuwWegbeheerderId = _bagUpdateService.GetGemeenteId(_wegvakData.OudeGemeente);
+                    _wegvakData.OudWegbeheerderId = _bagShared.GetGemeenteId(_wegvakData.OudeGemeente);
+                    _wegvakData.NieuwWegbeheerderId = _bagShared.GetGemeenteId(_wegvakData.OudeGemeente);
                     _wegvakData.WegbeheerderSoort = "P";
                     break;
                 default:
@@ -104,7 +107,7 @@ namespace OHx.Testautomatisering.Steps
         public void GegevenEenGebruikerDeGrensVanDeGemeenteHeeftAangepastWaardoorMinderDanTweeMeterVanHetWegvakMetIdInDeGemeenteKomtTeLiggen(string oudeGemeente, long wegvakId, string nieuweGemeente)
         {
             _wegvakData.WegvakId = wegvakId;
-            _wegvakData.NieuwGemeenteId = _bagUpdateService.GetGemeenteId(nieuweGemeente);
+            _wegvakData.NieuwGemeenteId = _bagShared.GetGemeenteId(nieuweGemeente);
         }
 
         [Given(@"de gemeente staat verkeerd in de wegvakken tabel")]

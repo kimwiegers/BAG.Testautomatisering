@@ -21,7 +21,7 @@ Voorbeelden:
 | Kopenhagen    | 999999994 | Tirana          | Academiestraat_B | Academiestraat_N | Sofia        |
 | Tallinn       | 999999988 | Tirana          | Academiestraat_B | Academiestraat_N | de provincie |
 
-Scenario: Een wegvak ligt na de BAG upddte in een onbekende gemeente
+Scenario: Een wegvak ligt na de BAG update in een onbekende gemeente
 Achtergrond: De nieuwe gemeente is niet bekend in BAG
 
 Gegeven een gebruiker de grens van de gemeente 'Kopenhagen' heeft aangepast waardoor het wegvak met id 999999993 onder on onbekende gemeente komt te vallen
