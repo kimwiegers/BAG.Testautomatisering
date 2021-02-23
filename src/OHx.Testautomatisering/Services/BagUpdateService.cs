@@ -116,18 +116,6 @@ namespace OHx.Testautomatisering.Services
             nieuwWegvak.Wegbeheerdersoort.Should().Be(wegbeheerderSoort);
         }
 
-        public short GetGemeenteId(string gemeentenaam)
-        {
-            var gemeenten = _nwaDbContext.GgaGemeenten.Where(x => x.Naam == gemeentenaam).ToList();
-
-            if (gemeenten.Count() == 0 || gemeenten.Count() > 1)
-            {
-                throw new Exception($"Er is geen record/er zijn meerdere records gevonden in gga_gemeenten voor gemeente {gemeentenaam}");
-            }
-
-            return gemeenten[0].Id;
-        }
-
         public string GetStraattype(string straatNaam, short gemeenteId)
         {
             var straat = GetStraat(gemeenteId, straatNaam);
@@ -180,7 +168,7 @@ namespace OHx.Testautomatisering.Services
         {
             var efnMelding = _ohxSchrijfDbContext.OhxBagNwwWegvakEfnMelding.Where(x => x.WvkId == wegvakId).ToList();
 
-            if (efnMelding.Count() == 0)
+            if (!efnMelding.Any())
             {
                 throw new Exception($"Er is geen record gevonden in efn_melding voor de wegvakId {wegvakId}");
             }
